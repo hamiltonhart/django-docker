@@ -1,0 +1,31 @@
+# Django-Docker Setup
+
+This template was created mostly with the help of a tutorial found here:
+https://londonappdeveloper.com/deploying-django-with-docker-compose/
+
+A huge thank you to London App Developer for the tutorial.
+
+## Basic Setup
+
+- Copy code locally
+- Build the image
+  - docker-compose build
+- Create a Django project (this template assumes the project is called app)
+  - docker-compose run --rm app sh -c "django-admin startproject app ."
+- Replace the settings.py and urls.py with those from the COPY-django_setup directory
+  - This directory can be removed
+- Spin up the container
+  - docker-compose up
+- Ensure the dev server is up and running
+  - 0.0.0.0:8000
+
+## Helpful Commands
+
+docker-compose run --rm app sh -c "<enter command here>"
+Example: docker-compose run --rm app sh -c "python manage.py createsuperuser"
+
+docker-compose -f alternative-docker-compose-file.yml
+
+
+uwsgi_params content can be found here:
+https://uwsgi-docs.readthedocs.io/en/latest/Nginx.html#what-is-the-uwsgi-params-file

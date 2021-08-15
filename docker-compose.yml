@@ -1,0 +1,37 @@
+# Version can be adjusted if needed
+version: '3.9'
+
+services:
+  app:
+    build:
+      # Establishes the location of the Dockerfile for 'app'
+      context: .
+    # Maps port 8000 of the container to port 8000 of the host machine
+    ports:
+      - 8000:8000
+    # Links the local ./app and container /app to changes to either will update the other
+    # Links data/web directory to /vol/web in container
+    volumes:
+      - ./app:/app
+      - ./data/web:/vol/web
+    command: >
+      sh -c "python manage.py migrate &&
+            python manage.py runserver 0.0.0.0:8000"
+    # Define any environment variables here
+    environment:
+      - SECRET_KEY=devsecretkey
+      - DEBUG=True
+      - DB_HOST=db
+      - DB_NAME=devdb
+      - DB_USER=devuser
+      - DB_PASS=changeme
+    depends_on:
+      - db
+  db:
+    # Adjust postgres version as needed
+    image: postgres:13-alpine
+    environment:
+      # ENV variables below should match the env variables in app above
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
